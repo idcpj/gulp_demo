@@ -20,16 +20,19 @@ const {src, dest, watch} = require('gulp'),
 
 const Src = {
     css: ["src/scss/**/*.scss","src/sass/**/*.sass","src/css/**/*.css","src/stylus/**/*.styl",],
-    scripts : ["src/scripts/"],
+    scripts : ["src/scripts/**/*.js"],
     images : ["src/images/**/*"],
 };
 
 
 const Dist = {
     styles : "dist/assets/styles/",
-    script : "dist/assets/script/",
+    script : "dist/js/",
     images : "dist/assets/images/",
-}
+};
+
+let DisPath ="dist/";
+let DistArr=Object.values(Dist);
 
 // Styles
 async function styles() {
@@ -46,7 +49,7 @@ function Scss() {
         .pipe(rename({suffix: '.min'}))
         .pipe(minifycss())
         .pipe(dest(Dist.styles))
-        .pipe(notify({message: 'Styles task complete'}));
+        .pipe(notify({message: 'Scss task complete'}));
 }
 function Sass() {
     return src(Src.css)
@@ -56,7 +59,7 @@ function Sass() {
         .pipe(rename({suffix: '.min'}))
         .pipe(minifycss())
         .pipe(dest(Dist.styles))
-        .pipe(notify({message: 'Styles task complete'}));
+        .pipe(notify({message: 'Sass task complete'}));
 }
 function Stylus() {
     return src(Src.css)
@@ -66,33 +69,34 @@ function Stylus() {
         .pipe(rename({suffix: '.min'}))
         .pipe(minifycss())
         .pipe(dest(Dist.styles))
-        .pipe(notify({message: 'Styles task complete'}));
+        .pipe(notify({message: 'Stylus task complete'}));
 }
 
 // Scripts
 function scripts() {
-    return src(sscripts + '**/*.js')
+    return src(Src.scripts )
         .pipe(jshint('.jshintrc'))
         .pipe(jshint.reporter('default'))
-        .pipe(concat('main.js'))
-        .pipe(dest(dscript))
+        // .pipe(concat('main.js'))
+        .pipe(dest(Dist.script))
         .pipe(rename({suffix: '.min'}))
         .pipe(uglify())
-        .pipe(dest(dscript))
+        .pipe(dest(Dist.script))
         .pipe(notify({message: 'Scripts task complete'}));
 }
 
 // Images
+// 支持 *.jpg, *.jpeg, *.png, *.gif, *.svg 不能压缩 webp
 function images() {
-    return src(simage)
-        .pipe(cache(imagemin({optimizationLevel: 3, progressive: true, interlaced: true})))
-        .pipe(dest(dimages))
+    return src(Src.images)
+        .pipe(cache(imagemin({ progressive: true, interlaced: true})))
+        .pipe(dest(Dist.images))
         .pipe(notify({message: 'Images task complete'}));
 }
 
 // Clean
 function clean(cb) {
-    del([dist], cb)
+    del(DisPath, cb)
 }
 
 // Default task
@@ -105,15 +109,15 @@ async function defaultTask() {
 // Watch
 function Watch() {
     // Watch .scss files
-    watch(sstyles + '**/*.scss', styles);
+    watch(Src.css, styles);
     // Watch .js files
-    watch(sscripts + '**/*.js', scripts);
+    watch(Src.scripts, scripts);
     // Watch image files
-    watch(simages + '/**/*', images);
+    watch(Src.images , images);
     // Create LiveReload server
     livereload.listen();
     // Watch any files in dist/, reload on change
-    watch([dist + '**']).on('change', livereload.changed);
+    watch(DistArr).on('change', livereload.changed);
 };
 
 exports.styles = styles;
