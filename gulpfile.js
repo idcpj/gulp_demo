@@ -17,11 +17,13 @@ const {src, dest, watch} = require('gulp'),
     cache = require('gulp-cache'),
     livereload = require('gulp-livereload'),
     del = require('del');
+    minifyHtml = require("gulp-minify-html"),
 
 const Src = {
     css: ["src/scss/**/*.scss","src/sass/**/*.sass","src/css/**/*.css","src/stylus/**/*.styl",],
     scripts : ["src/scripts/**/*.js"],
     images : ["src/images/**/*"],
+    html:['src/html/**/*.html']
 };
 
 
@@ -29,6 +31,7 @@ const Dist = {
     styles : "dist/assets/styles/",
     script : "dist/js/",
     images : "dist/assets/images/",
+    html:"dist/html/"
 };
 
 let DisPath ="dist/";
@@ -94,6 +97,12 @@ function images() {
         .pipe(notify({message: 'Images task complete'}));
 }
 
+function Html(){
+    return src(Src.html) // 要压缩的html文件
+        .pipe(minifyHtml())    //压缩
+        .pipe(dest(Dist.html));
+}
+
 // Clean
 function clean(cb) {
     del(DisPath, cb)
@@ -104,6 +113,7 @@ async function defaultTask() {
     await styles();
     await scripts();
     await images();
+    await Html();
 }
 
 // Watch
@@ -120,6 +130,7 @@ function Watch() {
     watch(DistArr).on('change', livereload.changed);
 };
 
+exports.html = Html;
 exports.styles = styles;
 exports.images = images;
 exports.scripts = scripts;
