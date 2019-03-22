@@ -5,6 +5,7 @@
 // Load plugins
 const {src, dest, watch} = require('gulp'),
     sass = require('gulp-sass'),
+    stylus = require('gulp-stylus'),
     autoprefixer = require('gulp-autoprefixer'),
     minifycss = require('gulp-minify-css'),
     jshint = require('gulp-jshint'),
@@ -18,7 +19,7 @@ const {src, dest, watch} = require('gulp'),
     del = require('del');
 
 const Src = {
-    css: ["src/scss/**/*.scss","src/sass/**/*.sass","src/css/**/*.css"],
+    css: ["src/scss/**/*.scss","src/sass/**/*.sass","src/css/**/*.css","src/stylus/**/*.styl",],
     scripts : ["src/scripts/"],
     images : ["src/images/**/*"],
 };
@@ -34,6 +35,7 @@ const Dist = {
 async function styles() {
     await Scss();
     await Sass();
+    await Stylus();
 }
 
 function Scss() {
@@ -49,6 +51,16 @@ function Scss() {
 function Sass() {
     return src(Src.css)
         .pipe(sass({style: 'expanded',}))
+        .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
+        .pipe(dest(Dist.styles))
+        .pipe(rename({suffix: '.min'}))
+        .pipe(minifycss())
+        .pipe(dest(Dist.styles))
+        .pipe(notify({message: 'Styles task complete'}));
+}
+function Stylus() {
+    return src(Src.css)
+        .pipe(stylus({style: 'expanded',}))
         .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
         .pipe(dest(Dist.styles))
         .pipe(rename({suffix: '.min'}))
@@ -104,7 +116,6 @@ function Watch() {
     watch([dist + '**']).on('change', livereload.changed);
 };
 
-exports.scss = Scss;
 exports.styles = styles;
 exports.images = images;
 exports.scripts = scripts;
