@@ -121,7 +121,7 @@ function Rjs(){
 // Default task
 async function defaultTask() {
     await styles();
-    await scripts();
+    // await scripts();
     await images();
     await Html();
     await Rjs();
@@ -132,7 +132,7 @@ function Watch() {
     // Watch .scss files
     watch(Src.css, styles);
     // Watch .js files
-    watch(Src.scripts, scripts);
+    // watch(Src.scripts, scripts);
     watch(Src.scripts, Rjs);
     // Watch image files
     watch(Src.images , images);
@@ -147,7 +147,7 @@ exports.rjs = Rjs;
 exports.html = Html;
 exports.styles = styles;
 exports.images = images;
-exports.scripts = scripts;
+exports.scripts = Rjs;
 exports.clean = clean;
 exports.default = defaultTask;
 
