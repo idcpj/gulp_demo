@@ -17,11 +17,15 @@ const {src, dest, watch} = require('gulp'),
     cache = require('gulp-cache'),
     livereload = require('gulp-livereload'),
     del = require('del');
+    minifyHtml = require("gulp-minify-html"),
+    requireOptimize = require('gulp-requirejs-optimize');
 
 const Src = {
     css: ["src/scss/**/*.scss","src/sass/**/*.sass","src/css/**/*.css","src/stylus/**/*.styl",],
-    scripts : ["src/scripts/**/*.js"],
+    scripts : ["src/scripts/*.js","src/scripts/**/*.js"],
     images : ["src/images/**/*"],
+    html:['src/html/**/*.html'],
+    requirejs:'src/scripts/require.config.js',
 };
 
 
@@ -29,6 +33,7 @@ const Dist = {
     styles : "dist/assets/styles/",
     script : "dist/js/",
     images : "dist/assets/images/",
+    html:"dist/html/"
 };
 
 let DisPath ="dist/";
@@ -94,9 +99,23 @@ function images() {
         .pipe(notify({message: 'Images task complete'}));
 }
 
+function Html(){
+    return src(Src.html) // 要压缩的html文件
+        .pipe(minifyHtml())    //压缩
+        .pipe(dest(Dist.html))
+        .pipe(notify({message:" "}))
+}
+
 // Clean
 function clean(cb) {
     del(DisPath, cb)
+}
+function Rjs(){
+    return src(Src.scripts)
+        .pipe(requireOptimize({
+            mainConfigFile: Src.requirejs,
+        }))
+        .pipe(dest(Dist.script));
 }
 
 // Default task
@@ -104,6 +123,8 @@ async function defaultTask() {
     await styles();
     await scripts();
     await images();
+    await Html();
+    // await Rjs();
 }
 
 // Watch
@@ -112,17 +133,21 @@ function Watch() {
     watch(Src.css, styles);
     // Watch .js files
     watch(Src.scripts, scripts);
+    // watch(Src.scripts, Rjs);
     // Watch image files
     watch(Src.images , images);
+    watch(Src.html , Html);
     // Create LiveReload server
     livereload.listen();
     // Watch any files in dist/, reload on change
     watch(DistArr).on('change', livereload.changed);
 };
 
+exports.rjs = Rjs;
+exports.html = Html;
 exports.styles = styles;
 exports.images = images;
-exports.scripts = scripts;
+exports.scripts = Rjs;
 exports.clean = clean;
 exports.default = defaultTask;
 

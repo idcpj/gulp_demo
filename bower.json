@@ -1,0 +1,25 @@
+{
+  "name": "gulp_demo",
+  "description": "gulp demo",
+  "main": "index.js",
+  "authors": [
+    "idcpj <260083304@qq.com>"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "gulp"
+  ],
+  "homepage": "https://github.com/idcpj/gulp_demo",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "src/script/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "requirejs": "^2.3.6",
+    "jquery": "^3.3.1"
+  }
+}

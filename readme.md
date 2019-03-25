@@ -11,6 +11,8 @@ npm install --save-dev gulp
 git clone http://github.com/idcpj/gulp_demo
 
 npm install 
+
+
 ```
 
 ## 使用的插件
@@ -42,3 +44,25 @@ image  测试 - 压缩图片
 
 
 `gulp watch`
+
+## 进阶
+### 使用 bower 管理包
+> [bower 教程](https://www.kancloud.cn/idcpj/python/993424)
+
+
+```
+sudo npm install bower --global
+bower init
+```
+
+创建 `.bowerrc` 文件
+
+
+设置文件下载路径
+```
+{ "directory" : "dist/vendor/" }
+```
+安装模块
+`bower install -S juqery`
+安装项目模块
+`bower install `
