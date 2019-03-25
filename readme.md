@@ -7,6 +7,8 @@ npm install --save-dev gulp
 git clone http://github.com/idcpj/gulp_demo
 
 npm install 
+
+
 ```
 
 ## 使用的插件
@@ -58,3 +60,5 @@ bower init
 ```
 安装模块
 `bower install -S juqery`
+安装项目模块
+`bower install `
