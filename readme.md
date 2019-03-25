@@ -1,5 +1,19 @@
-## 前言
-推荐使用 support_requirejs 分支
+## 项目描述
+[x] 解析sass
+
+[x] 解析scss
+
+[x] 解析css
+
+[x] 解析html
+
+[x] 解析js
+
+[x] 解析图片
+
+[x] 支持 requirejs
+
+[]  支持 优化器r.js
 
 
 ## 安装 
