@@ -121,10 +121,10 @@ function Rjs(){
 // Default task
 async function defaultTask() {
     await styles();
-    // await scripts();
+    await scripts();
     await images();
     await Html();
-    await Rjs();
+    // await Rjs();
 }
 
 // Watch
@@ -132,8 +132,8 @@ function Watch() {
     // Watch .scss files
     watch(Src.css, styles);
     // Watch .js files
-    // watch(Src.scripts, scripts);
-    watch(Src.scripts, Rjs);
+    watch(Src.scripts, scripts);
+    // watch(Src.scripts, Rjs);
     // Watch image files
     watch(Src.images , images);
     watch(Src.html , Html);

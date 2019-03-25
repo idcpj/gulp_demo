@@ -1,7 +1,6 @@
 require.config({
     paths: {
         jquery: '../../vendor/jquery/dist/jquery.min',
-        common:'../common/common',
     },
     shim: {
         "backbone": {
