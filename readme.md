@@ -1,3 +1,7 @@
+## 前言
+推荐使用 support_requirejs 分支
+
+
 ## 安装 
 ```
 npm install --global gulp-cli
